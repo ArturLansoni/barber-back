@@ -18,6 +18,12 @@ const add = async (req, res) => {
       return;
     }
 
+    const userAlreadyExists = await clientRepository.loadByMail(email);
+    if (userAlreadyExists) {
+      res.status(400).send({ error: "Esse usuário já existe!"});
+      return;
+    } 
+
     const data = await clientRepository.add({
       name,
       telephone,

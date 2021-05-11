@@ -1,11 +1,14 @@
 "use strict";
 const { offersModel } = require("../domain");
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose');
+const load = () => offersModel.find().populate("serviceId");
 
-const load = () => offersModel.find().populate("service");
-
-const add = ({barberId, serviceId}) => offersModel.create({barberId:mongoose.Types.ObjectId(barberId), serviceId:mongoose.Types.ObjectId(serviceId)});
+const add = ({ barberId, serviceId }) =>
+  offersModel.create({
+    barberId: mongoose.Types.ObjectId(barberId),
+    serviceId: mongoose.Types.ObjectId(serviceId),
+  });
 
 module.exports = {
   load,

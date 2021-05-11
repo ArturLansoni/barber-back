@@ -1,9 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const setupRouter = require("./routes");
-const setupDatabase = require("./database");
-const port = 4000;
+const setupDatabase = require("./config/database");
+const { port } = require("./config/env");
 
 setupDatabase();
 app.use(bodyParser.json());

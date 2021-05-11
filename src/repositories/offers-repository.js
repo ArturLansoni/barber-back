@@ -2,7 +2,10 @@
 const { offersModel } = require("../domain");
 const mongoose = require("mongoose");
 
-const load = () => offersModel.find().populate("serviceId");
+const loadByBarberId = (barberId) =>
+  offersModel
+    .find({ barberId: mongoose.Types.ObjectId(barberId) })
+    .populate("serviceId");
 
 const add = ({ barberId, serviceId }) =>
   offersModel.create({
@@ -11,6 +14,6 @@ const add = ({ barberId, serviceId }) =>
   });
 
 module.exports = {
-  load,
+  loadByBarberId,
   add,
 };

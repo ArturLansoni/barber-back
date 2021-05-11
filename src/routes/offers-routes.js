@@ -2,5 +2,5 @@
 const { offersController } = require("../controllers");
 
 module.exports = (app) => {
-  app.get("/offers", offersController.load)
+  app.get("/offers/:barberId", offersController.loadByBarberId);
 };

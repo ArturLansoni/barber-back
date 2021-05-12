@@ -15,6 +15,7 @@ const barber = new Mongoose.Schema({
   },
   telephone: { type: String },
   email: { type: String },
+  password: { type: String },
   image: { type: String },
   createdAt: { type: String },
 });

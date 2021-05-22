@@ -1,6 +1,6 @@
 "use strict";
 const { barberController } = require("../controllers");
-const { auth } = require("../middlewares/auth-middleware");
+const auth = require("../middlewares/auth-middleware");
 
 module.exports = (app) => {
   app.get("/barber", auth, barberController.load);

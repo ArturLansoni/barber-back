@@ -1,6 +1,6 @@
 "use strict";
 const { serviceController } = require("../controllers");
-const { auth } = require("../middlewares/auth-middleware");
+const auth = require("../middlewares/auth-middleware");
 
 module.exports = (app) => {
   app.get("/service", auth, serviceController.load);

@@ -1,5 +1,6 @@
 "use strict";
 const { clientRepository } = require("../repositories");
+const { bcryptAdapter } = require("../adapters");
 
 const load = async (req, res) => {
   try {
@@ -47,19 +48,19 @@ const login = async (req, res) => {
       return;
     }
 
-    const barber = await clientRepository.loadByEmail(email);
-    if (!barber) {
+    const client = await clientRepository.loadByEmail(email);
+    if (!client) {
       res.status(400).send({ error: "Este email não foi encontrado!" });
       return;
     }
 
-    const isValid = await bcryptAdapter.compare(password, barber.password);
+    const isValid = await bcryptAdapter.compare(password, client.password);
     if (!isValid) {
       res.status(400).send({ error: "Senha incorreta!" });
       return;
     }
 
-    const accessToken = await jwtAdapter.encrypt(barber._id);
+    const accessToken = await jwtAdapter.encrypt(client._id);
     res.status(201).send({ data: { accessToken } });
   } catch (e) {
     res.status(500).send({ error: "Ocorreu um erro inesperado!" });

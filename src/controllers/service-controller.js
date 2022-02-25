@@ -1,5 +1,5 @@
 "use strict";
-const { serviceRepository,offersRepository } = require("../repositories");
+const { serviceRepository, offersRepository } = require("../repositories");
 
 const load = async (req, res) => {
   try {
@@ -12,7 +12,8 @@ const load = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const { barberId, price, description, image, estimatedTime } = req.body;
+    const { barberId } = req;
+    const { price, description, image, estimatedTime } = req.body;
     if (!barberId || !price || !description || !image || !estimatedTime) {
       res.status(400).send({ error: "Parametros inválidos!" });
       return;
@@ -33,7 +34,21 @@ const add = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    await serviceRepository.remove(serviceId);
+    await offersRepository.removeByServiceId(serviceId);
+
+    res.status(201).send();
+  } catch (e) {
+    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+  }
+};
+
 module.exports = {
   load,
   add,
+  remove,
 };

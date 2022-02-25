@@ -11,6 +11,16 @@ const load = async (_req, res) => {
   }
 };
 
+const loadCurrentUser = async (req, res) => {
+  try {
+    const { barberId } = req;
+    const data = await barberRepository.loadById(barberId);
+    res.status(200).send({ data });
+  } catch (e) {
+    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+  }
+};
+
 const add = async (req, res) => {
   try {
     const { name, telephone, email, image, address, password } = req.body;
@@ -62,7 +72,7 @@ const login = async (req, res) => {
     }
 
     const accessToken = await jwtAdapter.encrypt(barber._id);
-    res.status(201).send({ data: { accessToken } });
+    res.status(200).send({ data: { ...barber, accessToken } });
   } catch (e) {
     res.status(500).send({ error: "Ocorreu um erro inesperado!" });
   }
@@ -70,6 +80,7 @@ const login = async (req, res) => {
 
 module.exports = {
   load,
+  loadCurrentUser,
   add,
   login,
 };

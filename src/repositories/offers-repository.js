@@ -1,5 +1,5 @@
 "use strict";
-const { offersModel } = require("../domain");
+const { offersModel } = require("../models");
 const mongoose = require("mongoose");
 
 const loadByBarberId = (barberId) =>
@@ -13,7 +13,11 @@ const add = ({ barberId, serviceId }) =>
     serviceId: mongoose.Types.ObjectId(serviceId),
   });
 
+const removeByServiceId = (serviceId) =>
+  offersModel.deleteOne({ serviceId: mongoose.Types.ObjectId(serviceId) });
+
 module.exports = {
   loadByBarberId,
   add,
+  removeByServiceId,
 };

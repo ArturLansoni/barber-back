@@ -1,6 +1,6 @@
 "use strict";
 const { Types } = require("mongoose");
-const { serviceModel } = require("../models");
+const { serviceModel } = require("../domain");
 
 const load = () => serviceModel.find();
 

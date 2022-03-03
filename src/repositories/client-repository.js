@@ -1,5 +1,5 @@
 "use strict";
-const { clientModel } = require("../models");
+const { clientModel } = require("../domain");
 
 const load = () => clientModel.find();
 

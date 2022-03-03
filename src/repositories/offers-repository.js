@@ -1,5 +1,5 @@
 "use strict";
-const { offersModel } = require("../models");
+const { offersModel } = require("../domain");
 const mongoose = require("mongoose");
 
 const loadByBarberId = (barberId) =>

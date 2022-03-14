@@ -1,10 +1,21 @@
 "use strict";
 const { barberController } = require("../controllers");
-const auth = require("../middlewares/auth-middleware");
+const {
+  barberValidator: { makeCreateBarberValidator },
+} = require("./validators");
+const {
+  authMiddleware: auth,
+  validatorMiddleware: validator,
+} = require("../middlewares");
 
 module.exports = (app) => {
   app.get("/barber", auth, barberController.load);
   app.get("/barber/me", auth, barberController.loadCurrentUser);
-  app.post("/barber", barberController.add);
+  app.post(
+    "/barber",
+    ...makeCreateBarberValidator(),
+    validator,
+    barberController.add
+  );
   app.post("/barber/login", barberController.login);
 };

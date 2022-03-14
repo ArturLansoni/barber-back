@@ -13,8 +13,7 @@ const load = async (_req, res) => {
 
 const loadCurrentUser = async (req, res) => {
   try {
-    const { barberId } = req;
-    const data = await barberRepository.loadByParams({ _id: barberId });
+    const data = await barberRepository.loadByParams({ _id: req.barberId });
     res.status(200).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -23,25 +22,17 @@ const loadCurrentUser = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const { name, telephone, email, image, address, password } = req.body;
-    if (!name || !telephone || !email || !image || !address || !password) {
-      res.status(400).send({ message: "Parametros inválidos!" });
-      return;
-    }
-
-    const barberAlreadyExists = await barberRepository.loadByParams({ email });
+    const barberAlreadyExists = await barberRepository.loadByParams({
+      email: req.body.email,
+    });
     if (barberAlreadyExists) {
       res.status(400).send({ message: "Esse barbeiro já existe!" });
       return;
     }
 
-    const hashedPassword = await bcryptAdapter.hash(password);
+    const hashedPassword = await bcryptAdapter.hash(req.body.password);
     const data = await barberRepository.create({
-      name,
-      telephone,
-      email,
-      image,
-      address,
+      ...req.body,
       password: hashedPassword,
     });
 
@@ -53,19 +44,18 @@ const add = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).send({ message: "Parametros inválidos!" });
-      return;
-    }
-
-    const barber = await barberRepository.loadByParams({ email });
+    const barber = await barberRepository.loadByParams({
+      email: req.body.email,
+    });
     if (!barber) {
       res.status(400).send({ message: "Este email não foi encontrado!" });
       return;
     }
 
-    const isValid = await bcryptAdapter.compare(password, barber.password);
+    const isValid = await bcryptAdapter.compare(
+      req.body.password,
+      barber.password
+    );
     if (!isValid) {
       res.status(400).send({ message: "Senha incorreta!" });
       return;

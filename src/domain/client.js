@@ -6,7 +6,8 @@ const client = new Mongoose.Schema({
   telephone: { type: String },
   email: { type: String },
   image: { type: String },
-  createdAt: { type: String },
+  createdAt: { type: Number },
+  updatedAt: { type: Number },
 });
 
 module.exports = Mongoose.model("client", client);

@@ -17,7 +17,8 @@ const barber = new Mongoose.Schema({
   email: { type: String },
   password: { type: String },
   image: { type: String },
-  createdAt: { type: String },
+  createdAt: { type: Number },
+  updatedAt: { type: Number },
 });
 
 module.exports = Mongoose.model("barber", barber);

@@ -7,6 +7,8 @@ const schedule = new Mongoose.Schema({
   scheduledFor: { type: String },
   paymentType: { type: String },
   isCanceled: { type: Boolean },
+  createdAt: { type: Number },
+  updatedAt: { type: Number },
 });
 
 module.exports = Mongoose.model("schedule", schedule);

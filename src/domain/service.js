@@ -6,6 +6,8 @@ const service = new Mongoose.Schema({
   description: { type: String },
   image: { type: String },
   estimatedTime: { type: Number },
+  createdAt: { type: Number },
+  updatedAt: { type: Number },
 });
 
 module.exports = Mongoose.model("service", service);

@@ -4,7 +4,7 @@ const { bcryptAdapter, jwtAdapter } = require("../adapters");
 
 const load = async (_req, res) => {
   try {
-    const data = await barberRepository.load();
+    const data = await barberRepository.loadAll();
     res.status(200).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -14,7 +14,7 @@ const load = async (_req, res) => {
 const loadCurrentUser = async (req, res) => {
   try {
     const { barberId } = req;
-    const data = await barberRepository.loadById(barberId);
+    const data = await barberRepository.loadByParams({ _id: barberId });
     res.status(200).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -29,14 +29,14 @@ const add = async (req, res) => {
       return;
     }
 
-    const barberAlreadyExists = await barberRepository.loadByEmail(email);
+    const barberAlreadyExists = await barberRepository.loadByParams({ email });
     if (barberAlreadyExists) {
       res.status(400).send({ message: "Esse barbeiro já existe!" });
       return;
     }
 
     const hashedPassword = await bcryptAdapter.hash(password);
-    const data = await barberRepository.add({
+    const data = await barberRepository.create({
       name,
       telephone,
       email,
@@ -59,7 +59,7 @@ const login = async (req, res) => {
       return;
     }
 
-    const barber = await barberRepository.loadByEmail(email);
+    const barber = await barberRepository.loadByParams({ email });
     if (!barber) {
       res.status(400).send({ message: "Este email não foi encontrado!" });
       return;

@@ -1,14 +1,14 @@
 "use strict";
 const { clientModel } = require("../domain");
 
-const load = () => clientModel.find();
+const loadAll = () => clientModel.find();
 
-const loadByEmail = (email) => clientModel.find({ email });
+const loadByParams = (params) => clientModel.findOne(params);
 
-const add = (client) => clientModel.create(client);
+const create = (client) => clientModel.create(client);
 
 module.exports = {
-  load,
-  loadByEmail,
-  add,
+  loadAll,
+  loadByParams,
+  create,
 };

@@ -4,7 +4,7 @@ const { bcryptAdapter } = require("../adapters");
 
 const load = async (req, res) => {
   try {
-    const data = await clientRepository.load();
+    const data = await clientRepository.loadAll();
     res.status(200).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -19,14 +19,14 @@ const add = async (req, res) => {
       return;
     }
 
-    const userAlreadyExists = await clientRepository.loadByEmail(email);
+    const userAlreadyExists = await clientRepository.loadByParams({ email });
     if (userAlreadyExists) {
       res.status(400).send({ message: "Esse usuário já existe!" });
       return;
     }
 
     const hashedPassword = await bcryptAdapter.hash(password);
-    const data = await clientRepository.add({
+    const data = await clientRepository.create({
       name,
       telephone,
       email,
@@ -48,7 +48,7 @@ const login = async (req, res) => {
       return;
     }
 
-    const client = await clientRepository.loadByEmail(email);
+    const client = await clientRepository.loadByParams({ email });
     if (!client) {
       res.status(400).send({ message: "Este email não foi encontrado!" });
       return;

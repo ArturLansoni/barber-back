@@ -2,22 +2,21 @@
 const { offersModel } = require("../domain");
 const mongoose = require("mongoose");
 
-const loadByBarberId = (barberId) =>
-  offersModel
-    .find({ barberId: mongoose.Types.ObjectId(barberId) })
-    .populate("serviceId");
+const loadAll = () => offersModel.find().select("-password -__v");
 
-const add = ({ barberId, serviceId }) =>
+const loadByParams = (params) => offersModel.find(params).populate("serviceId");
+
+const create = ({ barberId, serviceId }) =>
   offersModel.create({
     barberId: mongoose.Types.ObjectId(barberId),
     serviceId: mongoose.Types.ObjectId(serviceId),
   });
 
-const removeByServiceId = (serviceId) =>
-  offersModel.deleteOne({ serviceId: mongoose.Types.ObjectId(serviceId) });
+const removeByParams = (params) => offersModel.deleteOne(params);
 
 module.exports = {
-  loadByBarberId,
-  add,
-  removeByServiceId,
+  loadAll,
+  loadByParams,
+  create,
+  removeByParams,
 };

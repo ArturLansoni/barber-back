@@ -2,15 +2,18 @@
 const { Types } = require("mongoose");
 const { serviceModel } = require("../domain");
 
-const load = () => serviceModel.find();
+const loadAll = () => serviceModel.find();
 
-const add = (service) => serviceModel.create(service);
+const loadByParams = (params) => serviceModel.find(params);
+
+const create = (service) => serviceModel.create(service);
 
 const remove = (serviceId) =>
   serviceModel.deleteOne({ _id: Types.ObjectId(serviceId) });
 
 module.exports = {
-  load,
-  add,
+  loadAll,
+  loadByParams,
+  create,
   remove,
 };

@@ -9,7 +9,7 @@ const loadByCurrentBarber = async (req, res) => {
       return;
     }
 
-    const data = await offersRepository.loadByBarberId(barberId);
+    const data = await offersRepository.loadByParams({ _id: barberId });
     const services = data.map((item) => item.serviceId);
 
     res.status(200).send({ data: services });
@@ -26,7 +26,7 @@ const loadByBarberId = async (req, res) => {
       return;
     }
 
-    const data = await offersRepository.loadByBarberId(barberId);
+    const data = await offersRepository.loadByParams({ _id: barberId });
     const services = data.map((item) => item.serviceId);
 
     res.status(200).send({ data: services });

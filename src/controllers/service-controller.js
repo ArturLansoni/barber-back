@@ -1,7 +1,7 @@
 "use strict";
 const { serviceRepository, offersRepository } = require("../repositories");
 
-const load = async (_, res) => {
+const load = async (_req, res) => {
   try {
     const data = await serviceRepository.loadAll();
     res.status(200).send({ data });
@@ -12,21 +12,12 @@ const load = async (_, res) => {
 
 const add = async (req, res) => {
   try {
-    const { barberId } = req;
-    const { price, description, image, estimatedTime } = req.body;
-    if (!barberId || !price || !description || !image || !estimatedTime) {
-      res.status(400).send({ message: "Parametros inválidos!" });
-      return;
-    }
+    const data = await serviceRepository.create(req.body);
 
-    const data = await serviceRepository.create({
-      price,
-      description,
-      image,
-      estimatedTime,
+    await offersRepository.create({
+      barberId: req.barberId,
+      serviceId: data._id,
     });
-
-    await offersRepository.create({ barberId, serviceId: data._id });
 
     res.status(201).send({ data });
   } catch (e) {

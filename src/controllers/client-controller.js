@@ -2,7 +2,7 @@
 const { clientRepository } = require("../repositories");
 const { bcryptAdapter } = require("../adapters");
 
-const load = async (req, res) => {
+const load = async (_req, res) => {
   try {
     const data = await clientRepository.loadAll();
     res.status(200).send({ data });
@@ -13,24 +13,17 @@ const load = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const { name, telephone, email, image, password } = req.body;
-    if (!name || !telephone || !email || !image || !password) {
-      res.status(400).send({ message: "Parametros inválidos!" });
-      return;
-    }
-
-    const userAlreadyExists = await clientRepository.loadByParams({ email });
+    const userAlreadyExists = await clientRepository.loadByParams({
+      email: req.body.email,
+    });
     if (userAlreadyExists) {
       res.status(400).send({ message: "Esse usuário já existe!" });
       return;
     }
 
-    const hashedPassword = await bcryptAdapter.hash(password);
+    const hashedPassword = await bcryptAdapter.hash(req.body.password);
     const data = await clientRepository.create({
-      name,
-      telephone,
-      email,
-      image,
+      ...req.body,
       password: hashedPassword,
     });
 
@@ -42,19 +35,18 @@ const add = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).send({ message: "Parametros inválidos!" });
-      return;
-    }
-
-    const client = await clientRepository.loadByParams({ email });
+    const client = await clientRepository.loadByParams({
+      email: req.body.email,
+    });
     if (!client) {
       res.status(400).send({ message: "Este email não foi encontrado!" });
       return;
     }
 
-    const isValid = await bcryptAdapter.compare(password, client.password);
+    const isValid = await bcryptAdapter.compare(
+      req.body.password,
+      client.password
+    );
     if (!isValid) {
       res.status(400).send({ message: "Senha incorreta!" });
       return;

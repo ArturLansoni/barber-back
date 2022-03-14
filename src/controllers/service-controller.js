@@ -6,7 +6,7 @@ const load = async (req, res) => {
     const data = await serviceRepository.load();
     res.status(200).send({ data });
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 
@@ -15,7 +15,7 @@ const add = async (req, res) => {
     const { barberId } = req;
     const { price, description, image, estimatedTime } = req.body;
     if (!barberId || !price || !description || !image || !estimatedTime) {
-      res.status(400).send({ error: "Parametros inválidos!" });
+      res.status(400).send({ message: "Parametros inválidos!" });
       return;
     }
 
@@ -30,7 +30,7 @@ const add = async (req, res) => {
 
     res.status(201).send({ data });
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 
@@ -43,7 +43,7 @@ const remove = async (req, res) => {
 
     res.status(201).send();
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 

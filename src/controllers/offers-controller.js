@@ -5,7 +5,7 @@ const loadByCurrentBarber = async (req, res) => {
   try {
     const { barberId } = req;
     if (!barberId) {
-      res.status(400).send({ error: "Parametros inválidos!" });
+      res.status(400).send({ message: "Parametros inválidos!" });
       return;
     }
 
@@ -14,7 +14,7 @@ const loadByCurrentBarber = async (req, res) => {
 
     res.status(200).send({ data: services });
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 
@@ -22,7 +22,7 @@ const loadByBarberId = async (req, res) => {
   try {
     const { barberId } = req.params;
     if (!barberId) {
-      res.status(400).send({ error: "Parametros inválidos!" });
+      res.status(400).send({ message: "Parametros inválidos!" });
       return;
     }
 
@@ -31,7 +31,7 @@ const loadByBarberId = async (req, res) => {
 
     res.status(200).send({ data: services });
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 

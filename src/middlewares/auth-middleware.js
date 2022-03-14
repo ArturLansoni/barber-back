@@ -16,9 +16,9 @@ const authMiddleware = async (req, res, next) => {
         }
       }
     }
-    res.status(403).send({ error: "Acesso negado!" });
+    res.status(403).send({ message: "Acesso negado!" });
   } catch (e) {
-    res.status(500).send({ error: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
   }
 };
 

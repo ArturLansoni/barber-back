@@ -44,9 +44,12 @@ const add = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const barber = await barberRepository.loadByParams({
-      email: req.body.email,
-    });
+    const barber = await barberRepository.loadByParams(
+      {
+        email: req.body.email,
+      },
+      true
+    );
     if (!barber) {
       res.status(400).send({ message: "Este email não foi encontrado!" });
       return;

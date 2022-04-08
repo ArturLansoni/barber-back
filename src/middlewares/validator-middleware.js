@@ -3,11 +3,9 @@ const { validationResult } = require("express-validator");
 
 const validatorMiddleware = (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res
-        .status(400)
-        .send({ message: errors.array({ onlyFirstError: true })[0].msg });
+    const { errors } = validationResult(req);
+    if (!!errors.length) {
+      res.status(400).send({ message: errors[0].msg });
       return;
     }
     next();

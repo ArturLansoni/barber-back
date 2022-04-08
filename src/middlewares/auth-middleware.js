@@ -8,7 +8,7 @@ const authMiddleware = async (req, res, next) => {
     if (accessToken) {
       const { id } = await jwtAdapter.decrypt(accessToken);
       if (id) {
-        const barber = await barberRepository.loadById(id);
+        const barber = await barberRepository.loadByParams({ _id: id });
         if (barber) {
           Object.assign(req, { barberId: barber._id });
           next();

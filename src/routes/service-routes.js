@@ -15,7 +15,7 @@ module.exports = (app) => {
     ...makeCreateServiceValidator(),
     validator,
     auth,
-    serviceController.add
+    serviceController.create
   );
   app.delete("/service/:serviceId", auth, serviceController.remove);
 };

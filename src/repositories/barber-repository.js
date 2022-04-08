@@ -8,8 +8,12 @@ const loadByParams = (params, selectAll) =>
 
 const create = (barber) => barberModel.create(barber);
 
+const updateByParams = (params, barber) =>
+  barberModel.updateOne(params, barber);
+
 module.exports = {
   loadAll,
   loadByParams,
   create,
+  updateByParams,
 };

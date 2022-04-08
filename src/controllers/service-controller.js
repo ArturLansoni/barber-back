@@ -10,15 +10,13 @@ const load = async (_req, res) => {
   }
 };
 
-const add = async (req, res) => {
+const create = async (req, res) => {
   try {
     const data = await serviceRepository.create(req.body);
-
     await offersRepository.create({
       barberId: req.barberId,
       serviceId: data._id,
     });
-
     res.status(201).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -40,6 +38,6 @@ const remove = async (req, res) => {
 
 module.exports = {
   load,
-  add,
+  create,
   remove,
 };

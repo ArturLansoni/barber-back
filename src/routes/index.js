@@ -6,6 +6,7 @@ const barberRoutes = require("./barber-routes");
 const clientRoutes = require("./client-routes");
 const serviceRoutes = require("./service-routes");
 const offersRoutes = require("./offers-routes");
+const scheduleRoutes = require("./schedule-routes");
 
 module.exports = (app) => {
   app.use("/", router);
@@ -13,5 +14,5 @@ module.exports = (app) => {
   clientRoutes(router);
   serviceRoutes(router);
   offersRoutes(router);
+  scheduleRoutes(router);
 };
-

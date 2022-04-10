@@ -18,4 +18,5 @@ module.exports = (app) => {
     serviceController.create
   );
   app.delete("/service/:serviceId", auth, serviceController.remove);
+  app.put("/service/:serviceId", auth, serviceController.update);
 };

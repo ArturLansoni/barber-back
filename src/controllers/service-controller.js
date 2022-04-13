@@ -36,8 +36,19 @@ const remove = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+    await serviceRepository.updateByParams(serviceId, req.body);
+    res.status(200).send();
+  } catch (e) {
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
+  }
+};
+
 module.exports = {
   load,
   create,
   remove,
+  update,
 };

@@ -1,6 +1,6 @@
 "use strict";
-const { barberRepository } = require("../repositories");
 const { jwtAdapter } = require("../adapters");
+const { barberRepository, clientRepository } = require("../repositories");
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -8,9 +8,16 @@ const authMiddleware = async (req, res, next) => {
     if (accessToken) {
       const { id } = await jwtAdapter.decrypt(accessToken);
       if (id) {
-        const barber = await barberRepository.loadByParams({ _id: id });
-        if (barber) {
-          Object.assign(req, { barberId: barber._id });
+        let userType = "";
+        let user = await barberRepository.loadByParams({ _id: id }).lean();
+        if (!user) {
+          userType = "CLIENT";
+          user = await clientRepository.loadByParams({ _id: id }).lean();
+        } else {
+          userType = "BARBER";
+        }
+        if (user) {
+          Object.assign(req, { user: { ...user, userType }, userId: user._id });
           next();
           return;
         }

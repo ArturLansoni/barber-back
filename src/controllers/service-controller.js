@@ -1,4 +1,5 @@
 "use strict";
+const { Types } = require("mongoose");
 const { serviceRepository, offersRepository } = require("../repositories");
 
 const load = async (_req, res) => {
@@ -28,11 +29,13 @@ const remove = async (req, res) => {
     const { serviceId } = req.params;
 
     await serviceRepository.remove(serviceId);
-    await offersRepository.removeByParams({ _id: serviceId });
+    await offersRepository.removeByParams({
+      serviceId: Types.ObjectId(serviceId),
+    });
 
     res.status(201).send();
   } catch (e) {
-    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
+    res.status(500).send({ message: "Ocorreu um erro inesperado!", e });
   }
 };
 

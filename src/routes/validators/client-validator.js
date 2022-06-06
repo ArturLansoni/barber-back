@@ -9,10 +9,9 @@ const makeCreateClientValidator = () => {
       .withMessage("O parâmetro 'email' é obrigatório")
       .isEmail()
       .withMessage("O parâmetro 'email' é inválido"),
-    body("telephone")
+    body("password")
       .isString()
-      .withMessage("O parâmetro 'telephone' é obrigatório"),
-    body("image").isString().withMessage("O parâmetro 'image' é obrigatório"),
+      .withMessage("O parâmetro 'password' é obrigatório"),
   ];
 };
 

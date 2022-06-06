@@ -14,7 +14,7 @@ const create = async (req, res) => {
   try {
     const data = await serviceRepository.create(req.body);
     await offersRepository.create({
-      barberId: req.barberId,
+      barberId: req.userId,
       serviceId: data._id,
     });
     res.status(201).send({ data });

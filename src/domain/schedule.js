@@ -3,7 +3,8 @@ const Mongoose = require("mongoose");
 
 const schedule = new Mongoose.Schema(
   {
-    offersId: { type: Mongoose.Schema.Types.ObjectId, ref: "offers" },
+    offersId: [{ type: Mongoose.Schema.Types.ObjectId, ref: "offers" }],
+    barberId: { type: Mongoose.Schema.Types.ObjectId, ref: "barber" },
     clientId: { type: Mongoose.Schema.Types.ObjectId, ref: "client" },
     date: { type: Number },
     paymentType: { type: String },

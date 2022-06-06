@@ -3,11 +3,13 @@ const { offersRepository } = require("../repositories");
 
 const loadByCurrentBarber = async (req, res) => {
   try {
-    const data = await offersRepository.loadByParams({
-      barberId: req.barberId,
-    });
+    const data = await offersRepository
+      .loadByParams({
+        barberId: req.userId,
+      })
+      .lean();
     const services = data
-      .map((item) => item.serviceId)
+      .map((item) => ({ ...item.serviceId, offerId: item._id }))
       .filter((item) => !!item);
 
     res.status(200).send({ data: services });
@@ -18,8 +20,16 @@ const loadByCurrentBarber = async (req, res) => {
 
 const loadByBarberId = async (req, res) => {
   try {
-    const data = await offersRepository.loadByParams({ _id: req.barberId });
-    const services = data.map((item) => item.serviceId);
+    const data = await offersRepository
+      .loadByParams({
+        barberId: req.params.barberId,
+      })
+      .lean();
+    const services = data.map((item) => ({
+      ...item.serviceId,
+      offerId: item._id,
+      barberId: item.barberId,
+    }));
 
     res.status(200).send({ data: services });
   } catch (e) {

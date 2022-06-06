@@ -11,6 +11,7 @@ const {
 module.exports = (app) => {
   app.get("/barber", auth, barberController.load);
   app.get("/barber/me", auth, barberController.loadCurrentUser);
+  app.get("/barber/:barberId", auth, barberController.loadById);
   app.post(
     "/barber",
     ...makeCreateBarberValidator(),

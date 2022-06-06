@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 const makeCreateScheduleValidator = () => {
   return [
     body("offersId")
-      .isString()
+      .isArray()
       .withMessage("O parâmetro 'offersId' é obrigatório"),
     body("clientId")
       .isString()

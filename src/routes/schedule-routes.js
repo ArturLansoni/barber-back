@@ -10,6 +10,9 @@ const {
 
 module.exports = (app) => {
   app.get("/schedule", auth, scheduleController.load);
+  app.get("/schedule/me", auth, scheduleController.loadByCurrentUser);
+  app.get("/schedule/:scheduleId", auth, scheduleController.loadById);
+  app.put("/schedule/:scheduleId", auth, scheduleController.update);
   app.post(
     "/schedule",
     ...makeCreateScheduleValidator(),

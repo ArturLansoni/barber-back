@@ -13,7 +13,18 @@ const load = async (_req, res) => {
 
 const loadCurrentUser = async (req, res) => {
   try {
-    const data = await barberRepository.loadByParams({ _id: req.barberId });
+    const data = await barberRepository.loadByParams({ _id: req.userId });
+    res.status(200).send({ data });
+  } catch (e) {
+    res.status(500).send({ message: "Ocorreu um erro inesperado!" });
+  }
+};
+
+const loadById = async (req, res) => {
+  try {
+    const data = await barberRepository.loadByParams({
+      _id: req.params.barberId,
+    });
     res.status(200).send({ data });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -74,6 +85,7 @@ const login = async (req, res) => {
 module.exports = {
   load,
   loadCurrentUser,
+  loadById,
   add,
   login,
 };

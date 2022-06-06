@@ -42,6 +42,7 @@ const loadByParams = (params) => {
         as: "offersId",
       },
     },
+    { $sort: { createdAt: -1 } },
   ]);
 };
 

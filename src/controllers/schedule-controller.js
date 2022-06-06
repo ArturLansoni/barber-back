@@ -2,7 +2,11 @@
 const { Types } = require("mongoose");
 const { getDescriptionFromDate } = require("../adapters/date-adapter");
 const { sendNotification } = require("../adapters/notifier-adapter");
-const { scheduleRepository } = require("../repositories");
+const {
+  scheduleRepository,
+  barberRepository,
+  clientRepository,
+} = require("../repositories");
 
 const load = async (_req, res) => {
   try {
@@ -47,6 +51,25 @@ const loadByCurrentUser = async (req, res) => {
 const create = async (req, res) => {
   try {
     await scheduleRepository.create(req.body);
+    const client = await clientRepository
+      .loadByParams({
+        _id: req.body.clientId,
+      })
+      .lean();
+    const barber = await barberRepository
+      .loadByParams({
+        _id: req.body.barberId,
+      })
+      .lean();
+
+    await sendNotification(
+      `O cliente ${
+        client.name
+      } realizou um agendamento para o dia ${getDescriptionFromDate(
+        req.body.date
+      )}, acesse a aba de agendamentos para mais detalhes.`,
+      barber.telephone
+    );
     res.status(201).send({ message: "Agendamento criado com sucesso!" });
   } catch (e) {
     res.status(500).send({ message: "Ocorreu um erro inesperado!" });
@@ -80,11 +103,10 @@ const update = async (req, res) => {
       const scheduleDate = getDescriptionFromDate(schedule.date);
       const isAcceptedMessage = `Olá ${client.name}. Seu agendamento com ${barber.name} no dia ${scheduleDate} foi confirmado`;
       const isRefusedMessage = `Olá ${client.name}. Seu agendamento com ${barber.name} no dia ${scheduleDate} foi recusado`;
-      // await sendNotification(
-      //   isAccepted ? isAcceptedMessage : isRefusedMessage,
-      //   "19998496013"
-      //   // client.telephone
-      // );
+      await sendNotification(
+        isAccepted ? isAcceptedMessage : isRefusedMessage,
+        client.telephone
+      );
     }
     await scheduleRepository.updateByParams(
       { _id: Types.ObjectId(req.params.scheduleId) },
